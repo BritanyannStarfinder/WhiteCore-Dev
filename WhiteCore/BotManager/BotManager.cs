@@ -39,8 +39,6 @@ using OpenMetaverse;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using WhiteCore.ScriptEngine.DotNetEngine.Runtime;
-
 
 namespace WhiteCore.BotManager
 {
