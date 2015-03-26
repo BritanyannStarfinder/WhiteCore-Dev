@@ -28,7 +28,9 @@
 using System;
 using System.Runtime.Serialization;
 using OpenMetaverse;
+using WhiteCore.Framework;
 using WhiteCore.Framework.ClientInterfaces;
+using WhiteCore.Framework.PresenceInfo;
 using WhiteCore.Framework.SceneInfo;
 using WhiteCore.Region;
 
@@ -188,7 +190,7 @@ namespace WhiteCore.ScriptEngine.Shared
             SceneObjectPart part = scene.GetSceneObjectPart(Key);
             if (part == null) // Avatar, maybe?
             {
-                ScenePresence presence = scene.GetScenePresence(Key);
+                IScenePresence presence = scene.GetScenePresence(Key);
                 if (presence == null)
                     return;
 
@@ -210,13 +212,13 @@ namespace WhiteCore.ScriptEngine.Shared
                 {
                     Type = OS_NPC;
 
-                    INPCModule npcModule = scene.RequestModuleInterface<INPCModule>();
-                    INPC npcData = npcModule.GetNPC(presence.UUID, presence.Scene);
-
-                    if (npcData.SenseAsAgent)
-                    {
-                        Type |= AGENT;
-                    }
+//                    INPCModule npcModule = scene.RequestModuleInterface<INPCModule>();
+//                    INPC npcData = npcModule.GetNPC(presence.UUID, presence.Scene);
+//
+//                    if (npcData.SenseAsAgent)
+//                    {
+//                        Type |= AGENT;
+//                    }
                 }
 
                 if (presence.Velocity != Vector3.Zero)
