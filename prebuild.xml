@@ -1412,6 +1412,8 @@
       <Reference name="OpenMetaverse.StructuredData"/>
       <Reference name="OpenMetaverseTypes"/>
       <Reference name="SmartThreadPool"/>
+	  <Reference name="WhiteCore.Framework"/>
+	  <Reference name="WhiteCore.Region"/>
 
       <Files>
         <Match pattern="*.cs" recurse="false"/>
@@ -1653,7 +1655,7 @@
 
       <Reference name="WhiteCore.DataManager"/>
       <Reference name="WhiteCore.Framework"/>
-      <Reference name="WhiteCore.ScriptEngine.DotNetEngine"/>
+      <Reference name="WhiteCore.ScriptEngine.Shared"/>
       
       <Reference name="Nini" path="../../WhiteCoreSim/bin/"/>
       <Reference name="OpenMetaverse" path="../../WhiteCoreSim/bin/"/>
