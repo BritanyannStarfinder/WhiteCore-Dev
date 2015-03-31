@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using OpenMetaverse;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,12 +33,16 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared.Api;
+using WhiteCore.ScriptEngine.Shared.Api.Runtime;
+using WhiteCore.ScriptEngine.Shared.CodeTools;
 
 namespace WhiteCore.ScriptEngine.Shared.Instance
 {
     public class ScriptInstance : MarshalByRefObject, IScriptInstance
     {
-        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool StatePersistedHere { get { return m_AttachedAvatar == UUID.Zero; } }
 

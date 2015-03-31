@@ -211,14 +211,6 @@ namespace WhiteCore.ScriptEngine.Shared
                 else
                 {
                     Type = OS_NPC;
-
-//                    INPCModule npcModule = scene.RequestModuleInterface<INPCModule>();
-//                    INPC npcData = npcModule.GetNPC(presence.UUID, presence.Scene);
-//
-//                    if (npcData.SenseAsAgent)
-//                    {
-//                        Type |= AGENT;
-//                    }
                 }
 
                 if (presence.Velocity != Vector3.Zero)

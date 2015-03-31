@@ -25,10 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using OpenMetaverse;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
+using WhiteCore.Framework.Utilities;
 
 namespace WhiteCore.ScriptEngine.Shared.Instance
 {

@@ -1532,7 +1532,8 @@
       
       <Reference name="Axiom.MathLib" />
 
-      <Reference name="WhiteCore.ScriptEngine.Shared"/>
+      <Reference name="WhiteCore.Framework"/>
+	  <Reference name="WhiteCore.ScriptEngine.Shared"/>
       <Reference name="WhiteCore.ScriptEngine.Shared.CodeTools"/>
       <Reference name="WhiteCore.ScriptEngine.Shared.Api"/>
       <Reference name="WhiteCore.ScriptEngine.Shared.Api.Runtime"/>
