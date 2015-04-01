@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using OpenSim.Region.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Interfaces;
 
 namespace WhiteCore.ScriptEngine.Shared.Api
 {

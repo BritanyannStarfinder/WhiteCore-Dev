@@ -37,6 +37,9 @@ using integer = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLInteger;
 using key = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
 using rotation = WhiteCore.ScriptEngine.Shared.LSL_Types.Quaternion;
 using vector = WhiteCore.ScriptEngine.Shared.LSL_Types.Vector3;
+using WhiteCore.ScriptEngine.Shared.Api.Interfaces;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.Framework.Utilities;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Runtime
 {

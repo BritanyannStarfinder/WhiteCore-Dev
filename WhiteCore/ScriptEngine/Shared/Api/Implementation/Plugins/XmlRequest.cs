@@ -26,8 +26,9 @@
  */
 
 using System;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.Framework.Modules;
+using WhiteCore.Modules.Scripting;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
 {

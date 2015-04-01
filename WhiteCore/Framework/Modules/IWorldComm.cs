@@ -49,6 +49,12 @@ namespace WhiteCore.Framework.Modules
     public interface IWorldComm
     {
         /// <summary>
+        /// Total number of Listeners.
+        /// </summary>
+        /// <value>The listener count.</value>
+        int ListenerCount { get; }
+
+        /// <summary>
         ///     Create a listen event callback with the specified filters.
         ///     The parameters localID,itemID are needed to uniquely identify
         ///     the script during 'peek' time. Parameter hostID is needed to

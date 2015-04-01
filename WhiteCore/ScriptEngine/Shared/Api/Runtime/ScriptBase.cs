@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
+using WhiteCore.ScriptEngine.Interfaces;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Runtime
 {

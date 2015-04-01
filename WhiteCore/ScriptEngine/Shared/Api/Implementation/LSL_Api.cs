@@ -35,12 +35,11 @@ using System.Text;
 
 using System.Text.RegularExpressions;
 using System.Threading;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared;
-using OpenSim.Region.ScriptEngine.Shared.Api.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared.ScriptBase;
-using AssetLandmark = OpenSim.Framework.AssetLandmark;
-using GridRegion = OpenSim.Services.Interfaces.GridRegion;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Shared.Api.Interfaces;
+using AssetLandmark = WhiteCore.Framework.ClientInterfaces.AssetLandmark;
+using GridRegion = WhiteCore.Framework.Services.GridRegion;
 using LSL_Float = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLFloat;
 
 using LSL_Integer = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLInteger;
@@ -49,10 +48,16 @@ using LSL_List = WhiteCore.ScriptEngine.Shared.LSL_Types.list;
 using LSL_Rotation = WhiteCore.ScriptEngine.Shared.LSL_Types.Quaternion;
 using LSL_String = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
 using LSL_Vector = WhiteCore.ScriptEngine.Shared.LSL_Types.Vector3;
-using PermissionMask = OpenSim.Framework.PermissionMask;
-using PresenceInfo = OpenSim.Services.Interfaces.PresenceInfo;
-using PrimType = OpenSim.Region.Framework.Scenes.PrimType;
-using RegionFlags = OpenSim.Framework.RegionFlags;
+using PermissionMask = OpenMetaverse.PermissionMask;
+using PresenceInfo = WhiteCore.Framework.PresenceInfo;
+using PrimType = WhiteCore.Framework.SceneInfo.PrimType;
+using RegionFlags = WhiteCore.Framework.Services.RegionFlags;
+using WhiteCore.Framework.Services;
+using WhiteCore.Framework.Modules;
+using WhiteCore.Region;
+using WhiteCore.Framework.SceneInfo;
+using Nini.Config;
+using OpenMetaverse;
 
 namespace WhiteCore.ScriptEngine.Shared.Api
 {
@@ -69,7 +74,7 @@ namespace WhiteCore.ScriptEngine.Shared.Api
     /// </summary>
     public class LSL_Api : MarshalByRefObject, ILSL_Api, IScriptApi
     {
-        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+       // private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public int LlRequestAgentDataCacheTimeoutMs { get; set; }
 

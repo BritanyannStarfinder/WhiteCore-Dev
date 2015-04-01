@@ -28,10 +28,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Remoting.Lifetime;
-using OpenSim.Region.ScriptEngine.Shared;
-using OpenSim.Region.ScriptEngine.Shared.ScriptBase;
-using log4net;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared;
+
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Runtime
 {

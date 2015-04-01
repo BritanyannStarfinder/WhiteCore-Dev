@@ -28,7 +28,6 @@
 using System;
 using System.Runtime.Serialization;
 using OpenMetaverse;
-using WhiteCore.Framework;
 using WhiteCore.Framework.ClientInterfaces;
 using WhiteCore.Framework.PresenceInfo;
 using WhiteCore.Framework.SceneInfo;
@@ -102,7 +101,6 @@ namespace WhiteCore.ScriptEngine.Shared
         public const int ACTIVE = 2;
         public const int PASSIVE = 4;
         public const int SCRIPTED = 8;
-        public const int OS_NPC = 0x01000000;
 
         public DetectParams()
         {
@@ -130,27 +128,27 @@ namespace WhiteCore.ScriptEngine.Shared
         public int Type;
         public LSL_Types.Vector3 Velocity;
 
-        private LSL_Types.Vector3 touchST;
+        LSL_Types.Vector3 touchST;
         public LSL_Types.Vector3 TouchST { get { return touchST; } }
 
-        private LSL_Types.Vector3 touchNormal;
+        LSL_Types.Vector3 touchNormal;
         public LSL_Types.Vector3 TouchNormal { get { return touchNormal; } }
 
-        private LSL_Types.Vector3 touchBinormal;
+        LSL_Types.Vector3 touchBinormal;
         public LSL_Types.Vector3 TouchBinormal { get { return touchBinormal; } }
 
-        private LSL_Types.Vector3 touchPos;
+        LSL_Types.Vector3 touchPos;
         public LSL_Types.Vector3 TouchPos { get { return touchPos; } }
 
-        private LSL_Types.Vector3 touchUV;
+        LSL_Types.Vector3 touchUV;
         public LSL_Types.Vector3 TouchUV { get { return touchUV; } }
 
-        private int touchFace;
+        int touchFace;
         public int TouchFace { get { return touchFace; } }
 
         // This can be done in two places including the constructor
         // so be carefull what gets added here
-        private void initializeSurfaceTouch()
+        void initializeSurfaceTouch()
         {
             touchST = new LSL_Types.Vector3(-1.0, -1.0, 0.0);
             touchNormal = new LSL_Types.Vector3();
@@ -187,14 +185,14 @@ namespace WhiteCore.ScriptEngine.Shared
 
         public void Populate(IScene scene)
         {
-            SceneObjectPart part = scene.GetSceneObjectPart(Key);
+            SceneObjectPart part = (SceneObjectPart) scene.GetSceneObjectPart(Key);
             if (part == null) // Avatar, maybe?
             {
                 IScenePresence presence = scene.GetScenePresence(Key);
                 if (presence == null)
                     return;
 
-                Name = presence.Firstname + " " + presence.Lastname;
+                Name = presence.Name;
                 Owner = Key;
                 Position = new LSL_Types.Vector3(presence.AbsolutePosition);
                 Rotation = new LSL_Types.Quaternion(
@@ -203,15 +201,7 @@ namespace WhiteCore.ScriptEngine.Shared
                         presence.Rotation.Z,
                         presence.Rotation.W);
                 Velocity = new LSL_Types.Vector3(presence.Velocity);
-
-                if (presence.PresenceType != PresenceType.Npc)
-                {
-                    Type = AGENT;
-                }
-                else
-                {
-                    Type = OS_NPC;
-                }
+                Type = AGENT;
 
                 if (presence.Velocity != Vector3.Zero)
                     Type |= ACTIVE;
@@ -221,7 +211,8 @@ namespace WhiteCore.ScriptEngine.Shared
                 return;
             }
 
-            part = part.ParentGroup.RootPart; // We detect objects only
+            if (!part.IsRoot)
+                part = part.ParentGroup.RootPart; // We detect objects only
 
             LinkNum = 0; // Not relevant
 
@@ -233,7 +224,7 @@ namespace WhiteCore.ScriptEngine.Shared
             else
                 Type = ACTIVE;
 
-            foreach (SceneObjectPart p in part.ParentGroup.Parts)
+            foreach (ISceneChildEntity p in part.ParentGroup.Parts)
             {
                 if (p.Inventory.ContainsScripts())
                 {
@@ -266,5 +257,54 @@ namespace WhiteCore.ScriptEngine.Shared
         public string EventName;
         public Object[] Params;
         public DetectParams[] DetectParams;
+    }
+
+    /// <summary>
+    ///     Threat Level for a scripting function
+    /// </summary>
+    public enum ThreatLevel
+    {
+        /// <summary>
+        ///     Function is no threat at all. It doesn't constitute a threat to either users or the system and has no known side effects
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        ///     Abuse of this command can cause a nuisance to the region operator, such as log message spew
+        /// </summary>
+        Nuisance = 1,
+
+        /// <summary>
+        ///     Extreme levels of abuse of this function can cause impaired functioning of the region, or very gullible users can be tricked into experiencing harmless effects
+        /// </summary>
+        VeryLow = 2,
+
+        /// <summary>
+        ///     Intentional abuse can cause crashes or malfunction under certain circumstances, which can easily be rectified, or certain users can be tricked into certain situations in an avoidable manner.
+        /// </summary>
+        Low = 3,
+
+        /// <summary>
+        ///     Intentional abuse can cause denial of service and crashes with potential of data or state loss, or trusting users can be tricked into embarrassing or uncomfortable situations.
+        /// </summary>
+        Moderate = 4,
+
+        /// <summary>
+        ///     Casual abuse can cause impaired functionality or temporary denial of service conditions. Intentional abuse can easily cause crashes with potential data loss, or can be used to trick experienced and cautious users into unwanted situations, or changes global data permanently and without undo ability
+        ///     Malicious scripting can allow theft of content
+        /// </summary>
+        High = 5,
+
+        /// <summary>
+        ///     Even normal use may, depending on the number of instances, or frequency of use, result in severe service impairment or crash with loss of data, or can be used to cause unwanted or harmful effects on users without giving the user a means to avoid it.
+        /// </summary>
+        VeryHigh = 6,
+
+        /// <summary>
+        ///     Even casual use is a danger to region stability, or function allows console or OS command execution, or function allows taking money without consent, or allows deletion or modification of user data, or allows the compromise of sensitive data by design.
+        /// </summary>
+        Severe = 7,
+
+        NoAccess = 8
     }
 }

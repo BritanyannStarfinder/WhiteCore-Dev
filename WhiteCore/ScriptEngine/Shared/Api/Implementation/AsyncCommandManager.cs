@@ -29,9 +29,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared.Api.Plugins;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared.Api.Plugins;
 using Timer = WhiteCore.ScriptEngine.Shared.Api.Plugins.Timer;
+using WhiteCore.Framework.ConsoleFramework;
+using WhiteCore.Framework.Modules;
+using OpenMetaverse;
 
 namespace WhiteCore.ScriptEngine.Shared.Api
 {
@@ -40,7 +43,7 @@ namespace WhiteCore.ScriptEngine.Shared.Api
     /// </summary>
     public class AsyncCommandManager
     {
-        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Thread cmdHandlerThread;
         private static int cmdHandlerThreadCycleSleepms;
@@ -223,7 +226,7 @@ namespace WhiteCore.ScriptEngine.Shared.Api
                 }
                 catch (Exception e)
                 {
-                    m_log.Error("[ASYNC COMMAND MANAGER]: Exception in command handler pass: ", e);
+                    MainConsole.Instance.Error("[ASYNC COMMAND MANAGER]: Exception in command handler pass: ", e);
                 }
             }
         }

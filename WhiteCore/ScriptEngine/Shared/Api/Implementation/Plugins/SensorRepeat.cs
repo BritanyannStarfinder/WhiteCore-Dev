@@ -27,7 +27,9 @@
 
 using System;
 using System.Collections.Generic;
-using OpenSim.Region.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Shared;
+using OpenMetaverse;
+using WhiteCore.Region;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
 {
@@ -76,10 +78,10 @@ namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
             m_CmdManager = CmdManager;
             maximumRange = CmdManager.m_ScriptEngine.Config.GetDouble("SensorMaxRange", 96.0d);
             maximumToReturn = CmdManager.m_ScriptEngine.Config.GetInt("SensorMaxResults", 16);
-            m_npcModule = m_CmdManager.m_ScriptEngine.World.RequestModuleInterface<INPCModule>();
+//            m_npcModule = m_CmdManager.m_ScriptEngine.World.RequestModuleInterface<INPCModule>();
         }
 
-        private INPCModule m_npcModule;
+//        private INPCModule m_npcModule;
 
         private Object SenseLock = new Object();
 

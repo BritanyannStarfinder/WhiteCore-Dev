@@ -27,7 +27,8 @@
 
 using System;
 using System.Collections.Generic;
-using OpenSim.Region.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Shared;
+using OpenMetaverse;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
 {

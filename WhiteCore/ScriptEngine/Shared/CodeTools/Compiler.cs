@@ -34,6 +34,10 @@ using System.Reflection;
 using System.Text;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using WhiteCore.ScriptEngine.Interfaces;
+using OpenMetaverse;
+using WhiteCore.Framework.Modules;
+using WhiteCore.Framework.ConsoleFramework;
 
 namespace WhiteCore.ScriptEngine.Shared.CodeTools
 {
@@ -127,7 +131,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
             AllowedCompilers.Clear();
 
 #if DEBUG
-            m_log.Debug("[Compiler]: Allowed languages: " + allowComp);
+            MainConsole.Instance.Debug("[Compiler]: Allowed languages: " + allowComp);
 #endif
 
 
@@ -136,7 +140,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 string strlan = strl.Trim(" \t".ToCharArray()).ToLower();
                 if (!LanguageMapping.ContainsKey(strlan))
                 {
-                    m_log.Error("[Compiler]: Config error. Compiler is unable to recognize language type \"" + strlan + "\" specified in \"AllowedCompilers\".");
+                    MainConsole.Instance.Error("[Compiler]: Config error. Compiler is unable to recognize language type \"" + strlan + "\" specified in \"AllowedCompilers\".");
                 }
                 else
                 {
@@ -147,7 +151,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 AllowedCompilers.Add(strlan, true);
             }
             if (AllowedCompilers.Count == 0)
-                m_log.Error("[Compiler]: Config error. Compiler could not recognize any language in \"AllowedCompilers\". Scripts will not be executed!");
+                MainConsole.Instance.Error("[Compiler]: Config error. Compiler could not recognize any language in \"AllowedCompilers\". Scripts will not be executed!");
 
             // Default language
             string defaultCompileLanguage = m_scriptEngine.Config.GetString("DefaultCompileLanguage", "lsl").ToLower();
@@ -155,7 +159,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
             // Is this language recognized at all?
             if (!LanguageMapping.ContainsKey(defaultCompileLanguage))
             {
-                m_log.Error("[Compiler]: " +
+                MainConsole.Instance.Error("[Compiler]: " +
                                             "Config error. Default language \"" + defaultCompileLanguage + "\" specified in \"DefaultCompileLanguage\" is not recognized as a valid language. Changing default to: \"lsl\".");
                 defaultCompileLanguage = "lsl";
             }
@@ -163,7 +167,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
             // Is this language in allow-list?
             if (!AllowedCompilers.ContainsKey(defaultCompileLanguage))
             {
-                m_log.Error("[Compiler]: " +
+                MainConsole.Instance.Error("[Compiler]: " +
                             "Config error. Default language \"" + defaultCompileLanguage + "\"specified in \"DefaultCompileLanguage\" is not in list of \"AllowedCompilers\". Scripts may not be executed!");
             }
             else
@@ -192,7 +196,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[Compiler]: Exception trying to create ScriptEngine directory \"" + ScriptEnginesPath + "\": " + ex.ToString());
+                    MainConsole.Instance.Error("[Compiler]: Exception trying to create ScriptEngine directory \"" + ScriptEnginesPath + "\": " + ex.ToString());
                 }
             }
 
@@ -206,7 +210,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[Compiler]: Exception trying to create ScriptEngine directory \"" + Path.Combine(ScriptEnginesPath,
+                    MainConsole.Instance.Error("[Compiler]: Exception trying to create ScriptEngine directory \"" + Path.Combine(ScriptEnginesPath,
                                             m_scriptEngine.World.RegionInfo.RegionID.ToString()) + "\": " + ex.ToString());
                 }
             }
@@ -226,7 +230,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[Compiler]: Exception trying delete old script file \"" + file + "\": " + ex.ToString());
+                    MainConsole.Instance.Error("[Compiler]: Exception trying delete old script file \"" + file + "\": " + ex.ToString());
                 }
             }
             foreach (string file in Directory.GetFiles(Path.Combine(ScriptEnginesPath,
@@ -238,7 +242,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 }
                 catch (Exception ex)
                 {
-                    m_log.Error("[Compiler]: Exception trying delete old script file \"" + file + "\": " + ex.ToString());
+                    MainConsole.Instance.Error("[Compiler]: Exception trying delete old script file \"" + file + "\": " + ex.ToString());
                 }
             }
         }
@@ -317,19 +321,26 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 throw new Exception("Cannot find script assembly and no script text present");
 
             enumCompileType language = DefaultCompileLanguage;
+            var scriptLanguage = "lsl";
 
-            if (source.StartsWith("//c#", true, CultureInfo.InvariantCulture))
+            if (source.StartsWith ("//c#", true, CultureInfo.InvariantCulture))
+            {
                 language = enumCompileType.cs;
+                scriptLanguage = "c#";
+            }
             if (source.StartsWith("//vb", true, CultureInfo.InvariantCulture))
             {
                 language = enumCompileType.vb;
+                scriptLanguage = "vb";
                 // We need to remove //vb, it won't compile with that
 
                 source = source.Substring(4, source.Length - 4);
             }
-            if (source.StartsWith("//lsl", true, CultureInfo.InvariantCulture))
+            if (source.StartsWith ("//lsl", true, CultureInfo.InvariantCulture))
+            {
                 language = enumCompileType.lsl;
-
+                scriptLanguage = "lsl";
+            }
 //            m_log.DebugFormat("[Compiler]: Compile language is {0}", language);
 
             if (!AllowedCompilers.ContainsKey(language.ToString()))
@@ -340,7 +351,8 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
                 throw new Exception(errtext);
             }
 
-            if (m_scriptEngine.World.Permissions.CanCompileScript(ownerUUID, (int)language) == false)
+           
+            if (!m_scriptEngine.World.Permissions.CanCompileScript(ownerUUID, scriptLanguage))
             {
                 // Not allowed to compile to this language!
                 string errtext = String.Empty;
@@ -415,7 +427,7 @@ namespace WhiteCore.ScriptEngine.Shared.CodeTools
             string compileScript, string className, string baseClassName, ParameterInfo[] constructorParameters)
         {
             compileScript = string.Format(    
-@"using OpenSim.Region.ScriptEngine.Shared; 
+@"using WhiteCore.ScriptEngine.Shared; 
 using System.Collections.Generic;
 
 namespace SecondLife 
@@ -442,7 +454,7 @@ namespace SecondLife
         public static string CreateVBCompilerScript(string compileScript, string className, string baseClassName)
         {
             compileScript = String.Empty +
-                "Imports OpenSim.Region.ScriptEngine.Shared: Imports System.Collections.Generic: " +
+                "Imports WhiteCore.ScriptEngine.Shared: Imports System.Collections.Generic: " +
                 String.Empty + "NameSpace SecondLife:" +
                 String.Empty + "Public Class " + className + ": Inherits " + baseClassName +
                 "\r\nPublic Sub New()\r\nEnd Sub: " +
@@ -494,7 +506,7 @@ namespace SecondLife
                 }
                 catch (Exception ex) //NOTLEGIT - Should be just FileIOException
                 {
-                    m_log.Error("[Compiler]: Exception while " +
+                    MainConsole.Instance.Error("[Compiler]: Exception while " +
                                 "trying to write script source to file \"" +
                                 srcFileName + "\": " + ex.ToString());
                 }
@@ -508,9 +520,9 @@ namespace SecondLife
             string rootPath = AppDomain.CurrentDomain.BaseDirectory;
 
             parameters.ReferencedAssemblies.Add(Path.Combine(rootPath,
-                    "OpenSim.Region.ScriptEngine.Shared.dll"));
+                    "WhiteCore.ScriptEngine.Shared.dll"));
             parameters.ReferencedAssemblies.Add(Path.Combine(rootPath,
-                    "OpenSim.Region.ScriptEngine.Shared.Api.Runtime.dll"));
+                    "WhiteCore.ScriptEngine.Shared.Api.Runtime.dll"));
             parameters.ReferencedAssemblies.Add(Path.Combine(rootPath,
                     "OpenMetaverseTypes.dll"));
 

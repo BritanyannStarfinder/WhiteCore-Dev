@@ -28,10 +28,10 @@
 using System;
 using System.Runtime.Remoting.Lifetime;
 using System.Threading;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared;
-using OpenSim.Region.ScriptEngine.Shared.Api.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared.ScriptBase;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Shared.Api.Interfaces;
+
 
 using LSL_Float = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLFloat;
 using LSL_Integer = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLInteger;
@@ -40,6 +40,10 @@ using LSL_List = WhiteCore.ScriptEngine.Shared.LSL_Types.list;
 using LSL_Rotation = WhiteCore.ScriptEngine.Shared.LSL_Types.Quaternion;
 using LSL_String = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
 using LSL_Vector = WhiteCore.ScriptEngine.Shared.LSL_Types.Vector3;
+using WhiteCore.Region;
+using WhiteCore.Framework.SceneInfo;
+using WhiteCore.Framework.Modules;
+using OpenMetaverse;
 
 namespace WhiteCore.ScriptEngine.Shared.Api
 {

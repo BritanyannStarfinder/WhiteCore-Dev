@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using Tools;
 
 namespace WhiteCore.ScriptEngine.Shared.CodeTools
 {

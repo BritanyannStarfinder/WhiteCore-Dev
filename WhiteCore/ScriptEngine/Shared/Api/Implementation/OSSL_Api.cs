@@ -34,11 +34,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using System.Threading;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared;
-using OpenSim.Region.ScriptEngine.Shared.Api.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared.ScriptBase;
-using GridRegion = OpenSim.Services.Interfaces.GridRegion;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Shared.Api.Interfaces;
+using GridRegion = WhiteCore.Framework.Services.GridRegion;
 using LSL_Float = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLFloat;
 
 using LSL_Integer = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLInteger;
@@ -47,8 +46,12 @@ using LSL_List = WhiteCore.ScriptEngine.Shared.LSL_Types.list;
 using LSL_Rotation = WhiteCore.ScriptEngine.Shared.LSL_Types.Quaternion;
 using LSL_String = WhiteCore.ScriptEngine.Shared.LSL_Types.LSLString;
 using LSL_Vector = WhiteCore.ScriptEngine.Shared.LSL_Types.Vector3;
-using PermissionMask = OpenSim.Framework.PermissionMask;
-using TPFlags = OpenSim.Framework.Constants.TeleportFlags;
+using PermissionMask = OpenMetaverse.PermissionMask;
+using TPFlags = OpenMetaverse.TeleportFlags;
+using OpenMetaverse;
+using WhiteCore.Region;
+using WhiteCore.Framework.SceneInfo;
+using WhiteCore.Framework.Modules;
 
 namespace WhiteCore.ScriptEngine.Shared.Api
 {
@@ -113,7 +116,7 @@ namespace WhiteCore.ScriptEngine.Shared.Api
     [Serializable]
     public class OSSL_Api : MarshalByRefObject, IOSSL_Api, IScriptApi
     {
-        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+       // private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public const string GridInfoServiceConfigSectionName = "GridInfoService";
 

@@ -175,6 +175,11 @@ namespace WhiteCore.Modules.Scripting
                 BlockedChannels.Remove(channel);
         }
 
+        public int ListenerCount
+        {
+            get{ return m_listenerManager.ListenerCount; }
+        }
+
         /// <summary>
         ///     Create a listen event callback with the specified filters.
         ///     The parameters localID,itemID are needed to uniquely identify
@@ -450,6 +455,19 @@ namespace WhiteCore.Modules.Scripting
         private readonly int m_maxhandles;
         private readonly int m_maxlisteners;
         private int m_curlisteners;
+
+        /// <summary>
+        /// Gets the listener count.
+        /// </summary>
+        /// <value>The listener count.</value>
+        public int ListenerCount
+        { 
+            get
+            {
+                lock (m_listeners)
+                    return m_listeners.Count;
+            }
+        }
 
         public ListenerManager(int maxlisteners, int maxhandles)
         {

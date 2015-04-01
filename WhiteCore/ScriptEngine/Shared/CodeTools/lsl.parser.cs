@@ -1,4 +1,5 @@
 using System;
+using Tools;
 
 namespace WhiteCore.ScriptEngine.Shared.CodeTools
 {

@@ -26,8 +26,10 @@
  */
 
 using System;
-using OpenSim.Region.ScriptEngine.Interfaces;
-using OpenSim.Region.ScriptEngine.Shared;
+using WhiteCore.ScriptEngine.Interfaces;
+using WhiteCore.ScriptEngine.Shared;
+using WhiteCore.Framework.Modules;
+using WhiteCore.Modules.Scripting;
 
 namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
 {
@@ -76,7 +78,7 @@ namespace WhiteCore.ScriptEngine.Shared.Api.Plugins
 
                 foreach (IScriptEngine e in m_CmdManager.ScriptEngines)
                 {
-                    if (e.PostObjectEvent(httpInfo.LocalID,
+                    if (e.PostObjectEvent(httpInfo.PrimID,
                             new EventParams("http_response",
                             resobj, new DetectParams[0])))
                         break;
